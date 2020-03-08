@@ -1,13 +1,11 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useCallback, useState } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Spinner from "../common/Spinner";
-import AlbumsList from "./AlbumsList";
-import { Redirect } from "react-router-dom";
+import AlbumList from "./AlbumList";
+import AlbumDetail from "./AlbumDetail";
 import PropTypes from "prop-types";
 import * as albumActions from "../../redux/actions/albumActions";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 const USER_SERVICE_URL = "https://jsonplaceholder.typicode.com/photos";
 
@@ -18,13 +16,11 @@ class Album extends Component {
       albums: [],
       isLoading: false,
       error: null,
-      redirectToAddCoursePage: false
+      isDetailedView: false
     };
   }
 
   componentDidMount() {
-    const { actions } = this.props;
-
     this.setState({ isLoading: true });
     axios
       .get(USER_SERVICE_URL)
@@ -41,36 +37,23 @@ class Album extends Component {
       );
   }
 
-  handleViewDetails = async album => {
-    toast.success("Album Opened");
-    try {
-      await this.props.actions.viewAlbum(album);
-    } catch (error) {
-      toast.error("Viewing failed." + error.message, { autoClose: false });
-    }
-  };
-
   render() {
     return (
       <>
-        {this.props.isLoading ? (
-          <Spinner />
-        ) : (
-          <>
-            <h2>ALBUMS</h2>
-            <button
-              style={{ marginBottom: 20 }}
-              className="btn btn-primary add-course"
-            >
-              Add Album
-            </button>
-
-            <AlbumsList
-              onClick={this.handleViewDetails}
-              albums={this.state.albums}
-            />
-          </>
-        )}
+        <>
+          <h2>ALBUMS</h2>
+          <button
+            style={{ marginBottom: 20 }}
+            className="btn btn-primary add-course"
+          >
+            Add Album
+          </button>
+          {this.isDetailedView ? (
+            <AlbumDetail id={1} title={"daadada"} />
+          ) : (
+            <AlbumList albums={this.state.albums} />
+          )}
+        </>
       </>
     );
   }
