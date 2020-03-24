@@ -3,10 +3,8 @@ import initialState from "./initialState";
 
 export default function albumReducer(state = initialState.albums, action) {
   switch (action.type) {
-    case types.LOAD_ALBUMS:
-      return [...state, { ...action.albums }];
-    case types.VIEW_ALBUM:
-      return [...state, { ...action.album.url }];
+    case types.LOAD_ALBUMS_SUCCESS:
+      return action.albums;
     default:
       return state;
   }

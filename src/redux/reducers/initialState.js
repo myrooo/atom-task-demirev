@@ -1,3 +1,5 @@
 export default {
-    albums: []
+    albums: [],
+    favoriteAlbums: [],
+    isLoading:false
 }

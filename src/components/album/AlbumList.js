@@ -6,6 +6,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 
 const AlbumList = ({ albums }) => {
+ 
   const [isOpen, setOpen] = useState(false);
   const [currAlbum, setCurrAlbum] = useState({});
   const [favorite, setFavorite] = useState(false);
@@ -15,15 +16,18 @@ const AlbumList = ({ albums }) => {
   }
 
   function handleViewDetail(album) {
-    axios
-      .get(`https://jsonplaceholder.typicode.com/photos?id=${album.id}`)
-      .then(function(response) {
-        setCurrAlbum(response.data[0]);
-        setOpen(true);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    // axios
+    //   .get(`https://jsonplaceholder.typicode.com/photos?id=${album.id}`)
+    //   .then(function(response) {
+    //     setCurrAlbum(response.data[0]);
+    //     setOpen(true);
+    //   })
+    //   .catch(function(error) {
+    //     console.log(error);
+    //   });
+    setOpen(true);
+    return albums.filter(currAlbum=> currAlbum.id === album.id);
+
   }
 
   return (
@@ -33,8 +37,8 @@ const AlbumList = ({ albums }) => {
           id={currAlbum.id}
           title={currAlbum.title}
           imageUrl={currAlbum.url}
-          favorite={favorite}
           handleFavorite={handleFavorite}
+          // saveToFavorites={saveToFavorites}
         />
       ) : (
         <>

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import AlbumList from "./AlbumList";
 import AlbumDetail from "./AlbumDetail";
+import Spinner from "../common/Spinner";
 import PropTypes from "prop-types";
 import * as albumActions from "../../redux/actions/albumActions";
 import axios from "axios";
@@ -10,32 +11,36 @@ import axios from "axios";
 const USER_SERVICE_URL = "https://jsonplaceholder.typicode.com/photos";
 
 class Album extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      albums: [],
-      isLoading: false,
-      error: null,
-      isDetailedView: false
-    };
+  state = {
+    isLoading: false
+  };
+
+  componentWillUnmount() {
+    this.setState({ isLoading: true });
   }
 
   componentDidMount() {
-    this.setState({ isLoading: true });
-    axios
-      .get(USER_SERVICE_URL)
-      .then(response =>
-        this.setState({
-          albums: response.data
-        })
-      )
-      .catch(error =>
-        this.setState({
-          error,
-          isLoading: false
-        })
-      );
+ 
+
+    const { albums, actions } = this.props;
+
+    if (albums.length === 0) {
+      actions
+        .loadAlbums()
+        .then(this.setState({ isLoading: false }))
+        .catch(error => {
+          alert("Loading albums failed" + error);
+        });
+    }
+    // this.setState({ isLoading: false });
   }
+
+  // handleFavoriteAlbums = id => {
+  //   this.props.actions.saveToFavorites(
+  //     this.props.albums.filter(album => album.id === id)
+  //   );
+  //   console.log(id);
+  // };
 
   render() {
     return (
@@ -48,10 +53,17 @@ class Album extends Component {
           >
             Add Album
           </button>
-          {this.isDetailedView ? (
-            <AlbumDetail id={1} title={"daadada"} />
+          {this.state.isLoading ? (
+            <Spinner />
           ) : (
-            <AlbumList albums={this.state.albums} />
+            <>
+              {this.isDetailedView ? (
+                <AlbumDetail id={1} title={"daadada"} />
+              ) : (
+                <AlbumList albums={this.props.albums} 
+                />
+              )}
+            </>
           )}
         </>
       </>
@@ -61,31 +73,26 @@ class Album extends Component {
 
 Album.propTypes = {
   albums: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired,
+  favoriteAlbums: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    albums:
-      state.albums.length === 0
-        ? []
-        : state.albums.map(album => {
-            return {
-              ...album,
-              albumId: state.albums.find(a => a.id === album.albumId),
-              title: state.albums.find(a => a.title === album.title)
-            };
-          }),
-    isLoading: false
+    albums: state.albums.length === 0 ? [] : state.albums,
+    favoriteAlbums: state.favoriteAlbums
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      loadAlbum: bindActionCreators(albumActions.loadAlbums, dispatch),
-      viewAlbum: bindActionCreators(albumActions.viewAlbum, dispatch)
+      loadAlbums: bindActionCreators(albumActions.loadAlbums, dispatch),
+      // saveToFavorites: bindActionCreators(
+      //   albumActions.saveToFavoritesSuccess,
+      //   dispatch
+      // ),
+
     }
   };
 }
