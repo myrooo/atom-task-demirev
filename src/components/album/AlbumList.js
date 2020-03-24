@@ -16,17 +16,18 @@ const AlbumList = ({ albums }) => {
   }
 
   function handleViewDetail(album) {
-    // axios
-    //   .get(`https://jsonplaceholder.typicode.com/photos?id=${album.id}`)
-    //   .then(function(response) {
-    //     setCurrAlbum(response.data[0]);
-    //     setOpen(true);
-    //   })
-    //   .catch(function(error) {
-    //     console.log(error);
-    //   });
-    setOpen(true);
-    return albums.filter(currAlbum=> currAlbum.id === album.id);
+    axios
+      .get(`https://jsonplaceholder.typicode.com/photos?id=${album.id}`)
+      .then(function(response) {
+        setCurrAlbum(response.data[0]);
+        setOpen(true);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+      
+    // setOpen(true);
+    // return albums.filter(currAlbum=> currAlbum.id === album.id);
 
   }
 
