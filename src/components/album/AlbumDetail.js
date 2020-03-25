@@ -8,18 +8,14 @@ import React, {
 import PropTypes from "prop-types";
 import { connect, dispatch } from "react-redux";
 import { bindActionCreators } from "redux";
-import * as albumActions from "../../redux/actions/albumActions";
+import {
+  saveToFavoritesSuccess,
+  saveToFavorites
+} from "../../redux/actions/albumActions";
 import * as types from "../../redux/actions/actionTypes";
 
 const AlbumDetail = ({ id, title, imageUrl }) => {
   const [favorite, setFavorite] = useState(false);
-
-  useEffect(
-    () =>
-      function saveToFavorites(id) {
-        dispatch({ type: "SAVE_TO_FAVORITES_SUCCESS", id });
-      }
-  );
 
   return (
     <div className="card col-4 cardmin">
@@ -29,8 +25,10 @@ const AlbumDetail = ({ id, title, imageUrl }) => {
           <button
             className={favorite ? "heartredbutton" : "heartdarkbutton"}
             onClick={() => {
-              saveToFavorites(id);
+              // saveToFavorites(id);
+              saveToFavorites(id)
               favorite ? setFavorite(false) : setFavorite(true);
+              console.log("clicked");
             }}
           />
           <span>
@@ -46,7 +44,6 @@ AlbumDetail.propTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
-  saveToFavorites: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -55,12 +52,27 @@ function mapStateToProps(state) {
     favoriteAlbums: state.favoriteAlbums
   };
 }
-const saveToFavorites = id => ({ type: "SAVE_TO_FAVORITES_SUCCESS", id });
+// const saveToFavorites = id => ({ type: types.SAVE_TO_FAVORITES_SUCCESS, id });
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     saveToFavorites: id => dispatch(saveToFavorites(id))
+//   };
+// }
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveToFavorites: id => dispatch(saveToFavorites(id))
+    saveToFavorites: id => { dispatch({type:types.SAVE_TO_FAVORITES,id})},
+    // saveToFavorites: bindActionCreators(saveToFavorites, dispatch)
   };
+  // sendMessage: messaga => {
+  //   dispatch(sendMessage(message));
+  //   dispatch(navigateTo({ routeName: 'messagesList' }));
+  //   },
 }
 
-export default connect(mapDispatchToProps, mapStateToProps)(AlbumDetail);
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumDetail);
+
+

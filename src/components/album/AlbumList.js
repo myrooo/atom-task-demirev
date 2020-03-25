@@ -25,7 +25,7 @@ const AlbumList = ({ albums }) => {
       .catch(function(error) {
         console.log(error);
       });
-      
+
     // setOpen(true);
     // return albums.filter(currAlbum=> currAlbum.id === album.id);
 
@@ -39,7 +39,6 @@ const AlbumList = ({ albums }) => {
           title={currAlbum.title}
           imageUrl={currAlbum.url}
           handleFavorite={handleFavorite}
-          // saveToFavorites={saveToFavorites}
         />
       ) : (
         <>

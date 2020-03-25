@@ -8,8 +8,7 @@ import favoriteReducer from "./redux/reducers/favoriteReducer";
 
 const rootReducer = combineReducers({
   albums: albumReducer,
-  saveToFavorites:favoriteReducer,
-  favoriteAlbums:favoriteReducer
+  favoriteReducer
 });
 
 const persistConfig = {

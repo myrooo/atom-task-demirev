@@ -88,10 +88,10 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       loadAlbums: bindActionCreators(albumActions.loadAlbums, dispatch),
-      // saveToFavorites: bindActionCreators(
-      //   albumActions.saveToFavoritesSuccess,
-      //   dispatch
-      // ),
+      saveToFavorites: bindActionCreators(
+        albumActions.saveToFavoritesSuccess,
+        dispatch
+      ),
 
     }
   };

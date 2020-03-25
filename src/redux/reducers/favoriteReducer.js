@@ -1,7 +1,7 @@
 import * as types from "../actions/actionTypes";
 import initialState from "./initialState";
 
-export default function favoriteReducer(state = initialState, action) {
+export default function favoriteReducer(state = initialState.favoriteAlbums, action) {
   switch (action.type) {
       case types.SAVE_TO_FAVORITES_SUCCESS:
         return [

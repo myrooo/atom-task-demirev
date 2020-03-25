@@ -13,16 +13,16 @@ export function apiCallError() {
 export function loadAlbumsSuccess(albums) {
   return {
     type: types.LOAD_ALBUMS_SUCCESS,
-    albums,
+    albums
     // isLoading: false
   };
 }
 
-export function saveToFavoritesSuccess(id){
-  return{
+export function saveToFavoritesSuccess(id) {
+  return {
     type: types.SAVE_TO_FAVORITES_SUCCESS,
     id
-  }
+  };
 }
 
 export function viewAlbumFavorites(favoriteAlbums) {
@@ -51,16 +51,8 @@ export function loadAlbums() {
   };
 }
 
-// export function saveToFavorites(){
-//   return function(dispatch){
-//     dispatch(beginApiCall());
-//     return getAlbums()
-//     .then(albums => {
-//       dispatch(saveToFavoritesSuccess(albums));
-//     })
-//     .catch(error => {
-//       dispatch(apiCallError(error));
-//       throw error;
-//     });
-//   }
-// }
+export function saveToFavorites(id) {
+  return function(dispatch) {
+    dispatch(saveToFavoritesSuccess(id));
+  };
+}
